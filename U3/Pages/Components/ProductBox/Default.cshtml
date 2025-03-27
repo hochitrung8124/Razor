@@ -1,0 +1,15 @@
+﻿@using Models;
+@model List<Product>
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col">
+
+            @* <li class="list-group-item">
+        @product.Name;
+        </li> *@
+            @await Html.PartialAsync("_ProductItem", product)
+
+    </div>
+    }
+</div>

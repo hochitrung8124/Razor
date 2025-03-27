@@ -1,0 +1,143 @@
+﻿@page "/product/{id:int?}"
+@model U3.Pages.ProductPageModel
+@{
+    var product = Model.product;
+    var products = Model.products;
+    var products_search = Model.products_search;
+}
+
+<h1>
+    @ViewData["Title"]
+</h1>
+@if (product != null)
+{
+    <h2>@product.Name</h2>
+    <p>Giá: @product.Price</p>
+    @foreach (var img in @product.ImagePaths)
+    {
+        <div class="col-6 col-md-4 col-lg-3 mb-3">
+            <div class="card h-100">
+                <img src="@img" class="card-img-top img-fluid" alt="Ảnh sản phẩm">
+            </div>
+        </div>
+    }
+    <a asp-asp-page="ProductPage" asp-route-id ="">Danh sách sản phẩm</a>
+    <h1>Cập nhật sản phẩm</h1>
+    <form method="post" asp-page-handler="UpdateProduct">
+        <div class="mb-3" style="display: none;">
+            <label class="form-label">ID sản phẩm:</label>
+            <input class="form-control" type="number" name="id" value="@product.Id" required />
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label">Tên</label>
+            <input type="text" class="form-control" name="name" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Mô tả</label>
+            <input type="text" class="form-control" name="description" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Giá</label>
+            <input type="number" class="form-control" name="price" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+    </form>
+}
+else
+{
+     <ul class="list-group">
+        @foreach (var item in products)
+        {
+            <li class="list-group-item">
+                <a asp-page="ProductPage" asp-route-id="@item.Id">@item.Name</a>
+            </li>
+        }
+    </ul>
+    <hr>
+    <a class="btn btn-primary" asp-page="ProductPage" asp-page-handler="RemoveAll">Xóa tất cả</a>
+    <a class="btn btn-primary" asp-page="ProductPage" asp-page-handler="LoadAll">Nạp sản phẩm</a>
+    <hr>
+    <div class="mb-3">
+        <label class="form-label">Search</label>
+        <input type="text" class="form-control" name="name" required />
+    </div>
+@*     <h1>Thêm sản phẩm mới</h1> 
+     <form method="post" asp-page-handler="AddProduct">
+        <div class="mb-3">
+            <label class="form-label">Tên</label>
+            <input type="text" class="form-control" name="name" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Mô tả</label>
+            <input type="text" class="form-control" name="description" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Giá</label>
+            <input type="number" class="form-control" name="price" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form> *@
+
+    <form enctype="multipart/form-data" class="bg-light p-2 m-2" method="post" asp-page-handler="AddProduct">
+        <div class="mb-3">
+
+            <label class="form-label" asp-for="@product.Id"></label>
+
+            <input type="text" class="form-control" asp-for="@product.Id" />
+
+            <span class="text-danger" asp-validation-for="@product.Id"></span>
+        </div>
+        <div class="mb-3">
+
+            <label class="form-label" asp-for="@Model.product.Name"></label>
+
+            <input type="text" class="form-control" asp-for="@Model.product.Name" />
+
+            <span class="text-danger" asp-validation-for="@Model.product.Name"></span>
+        </div>
+        <div class="mb-3">
+
+            <label class="form-label" asp-for="@Model.product.Description"></label>
+
+            <input type="text" class="form-control" asp-for="@Model.product.Description" />
+
+            <span class="text-danger" asp-validation-for="@Model.product.Description"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="@Model.product.Price"></label>
+
+            <input type="text"  class="form-control" asp-for="@Model.product.Price" />
+
+            <span class="text-danger" asp-validation-for="@Model.product.Price"></span>
+        </div>
+        <div>
+            <div class="mb-3">
+                <label class="form-label" asp-for="@Model.UploadedImages"></label>
+
+                <input type="file" class="form-control" multiple asp-for="@Model.UploadedImages" />
+
+                <span class="text-danger" asp-validation-for="@Model.UploadedImages"></span>
+            </div>
+        </div>
+        <hr>
+        <button class="btn btn-danger" type="submit">Submit</button>
+        <p>thông báo :  @Model.notification</p>
+    </form>
+
+
+@*     <div class="alert alert-danger">
+
+        <p>Contact Information</p>
+
+        <ul>
+
+            <li>ContactId: @Model.product.Id</li>
+
+            <li>FirstName: @Model.product.Name </li>
+
+        </ul>
+
+    </div>   *@
+}
+

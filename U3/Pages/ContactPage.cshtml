@@ -1,0 +1,77 @@
+﻿@page
+@model U3.Pages.ContactPageModel
+@{
+
+ViewData["Title"] = "LIEN HE";
+
+}
+
+<h1 class="display-4">Contact Page</h1>
+
+<p class="lead">Fill in contact information</p>
+
+<hr />
+
+<form class="bg-light p-2 m-2" method="post" asp-page="ContactPage">
+    <div class="mb-3">
+
+        <label class="form-label" asp-for="@Model.contact.ContactId"></label>
+
+        <input type="text" class="form-control" asp-for="@Model.contact.ContactId" />
+
+        <span class="text-danger" asp-validation-for="@Model.contact.ContactId"></span>
+    </div>
+    <div class="mb-3">
+
+        <label class="form-label" asp-for="@Model.contact.FirstName"></label>
+
+        <input class="form-control" asp-for="@Model.contact.FirstName" />
+
+        <span class="text-danger" asp-validation-for="@Model.contact.FirstName"></span>
+    </div>
+    <div class="mb-3">
+
+        <label class="form-label" asp-for="@Model.contact.LastName"></label>
+
+        <input class="form-control" asp-for="@Model.contact.LastName" />
+
+        <span class="text-danger" asp-validation-for="@Model.contact.LastName"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="@Model.contact.DateOfBirth"></label>
+
+        <input class="form-control" asp-for="@Model.contact.DateOfBirth" />
+
+        <span class="text-danger" asp-validation-for="@Model.contact.DateOfBirth"></span>
+    </div>
+    <div class="mb-3">
+
+        <label class="form-label" asp-for="@Model.contact.Email"></label>
+
+        <input type="text" class="form-control" asp-for="@Model.contact.Email" />
+
+        <span class="text-danger" asp-validation-for="@Model.contact.Email"></span>
+    </div>
+    <button class="btn btn-danger" type="submit">Submit</button>
+
+</form>
+
+<p>@Model.notification</p>
+
+<div class="alert alert-danger">
+
+    <p>Contact Information</p>
+
+    <ul>
+
+        <li>ContactId: @Model.contact.ContactId</li>
+
+        <li>FirstName: @Model.contact.FirstName </li>
+
+        <li>LastName: @Model.contact.LastName </li>
+
+        <li>Email: @Model.contact.Email</li>
+
+    </ul>
+
+</div>
