@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using U3.Pages.Data;
+using U3.Pages.Models;
 
 #nullable disable
 
@@ -34,15 +34,14 @@ namespace U3.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category", (string)null);
                 });
 
             modelBuilder.Entity("U3.Pages.Models.Product", b =>
@@ -59,16 +58,16 @@ namespace U3.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Images")
+                    b.Property<string>("ImagePaths")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("REAL");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
@@ -77,7 +76,7 @@ namespace U3.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", t =>
+                    b.ToTable("Product", null, t =>
                         {
                             t.HasCheckConstraint("CK_Product_Price", "Price >= 0");
 
@@ -95,8 +94,7 @@ namespace U3.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -110,8 +108,7 @@ namespace U3.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -121,7 +118,7 @@ namespace U3.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users", t =>
+                    b.ToTable("User", null, t =>
                         {
                             t.HasCheckConstraint("CK_User_Role", "Role IN ('admin', 'customer')");
                         });

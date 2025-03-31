@@ -22,7 +22,7 @@ namespace U3.Pages.Components.ProductBox
                     //mặc đinh
                     return View<List<Product>>(products);
                 }*/
-         List<Product> products = null;
+         List<Productlast> products = null;
         public ProductBox(ProductService productService)
         {
             _productService = productService;

@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using U3.Pages.Models;
 using U3.Pages.Services;
 
 var builder = WebApplication.CreateBuilder(args);
