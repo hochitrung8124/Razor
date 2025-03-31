@@ -5,79 +5,82 @@ namespace U3.Pages.Services
 {
     public class ProductService
     {
-        public List<Product> Results { get; set; }
-        private List<Product> products = null;
-        private void listSP()
-        {
-            products = new List<Product>()
-                {
-                    new Product() { Id = 0, Name = "Ip14", Description = "Dien thoai", Price = 1000 },
-                    new Product() { Id = 1, Name = "Ip15", Description = "Dien thoai", Price = 1000 },
-                    new Product() {Id = 2, Name = "Ip16", Description = "Dien thoai", Price = 1000 }
-                };
-        }
-        public List<Product> GetProducts() { return products; }
+        private MyDBc _myDBc;
 
+        public ProductService(MyDBc myDBc) 
+        {
+            _myDBc = myDBc;
+        }
         public async Task<List<Product>> GetProductsAsync()
         {
             await Task.Delay(500);
-            return LoadProducts();
+            return getProducts();
         }
-        public Product GetProductById(int id) 
+
+        public List<Product> getProducts() 
         {
-            foreach (Product product in products)
+            var products = _myDBc.Products.Select(dd => new Product
             {
-                if(product.Id.Equals(id))
+                Name = dd.Name,
+                Description = dd.Description,
+                ImagePaths = dd.ImagePaths,
+                Price = dd.Price,
+            });
+            return products.ToList(); 
+        }
+        public Product GetProductById(int? id) 
+        {
+            var check = _myDBc.Products.FirstOrDefault(tt => tt.Id.Equals(id));
+            if (check != null)
+            {
+                return check;
+            }
+                return null;
+        }
+        public void addProduct(Product data)
+        {
+            _myDBc.Add(data);
+            _myDBc.SaveChanges();
+        }
+
+        public void deleteProduct(int id)
+        {
+            var check = _myDBc.Products.FirstOrDefault(tt => tt.Id.Equals(id));
+            if (check != null)
+            {
+                _myDBc.Remove(check);
+                _myDBc.SaveChanges();
+            }
+        }
+
+        public void updateProduct(Product product) 
+        {
+            var check = _myDBc.Products.FirstOrDefault(tt => tt.Id.Equals(product.Id));
+            if (check != null)
+            {
+                check.Name = product.Name;
+                check.Description = product.Description;
+                check.ImagePaths = product.ImagePaths;
+                check.Price = product.Price;
+                check.Stock = product.Stock;    
+                _myDBc.SaveChanges();
+            }
+        }
+
+        public List<Product> searchByName(string name) 
+        {
+            var _listProduct = new List<Product>();
+            foreach (var item in _myDBc.Products)
+            {
+                if (item.Name.Equals(name))
                 {
-                    return product;
+                    _listProduct.Add(item);
                 }
             }
-            return null; 
-        }
-        public int GetNextId()
-        {
-            return products.Count > 0 ? products.Max(p => p.Id) + 1 : 1;
-        }
-        public void addData(Product data)
-        {
-            products.Add(data);
+            return _listProduct.ToList();    
         }
 
-        public void updateData(Product data)
-        {
-            var h = products.FirstOrDefault(t => t.Id.Equals(data.Id));
-            if (h == null)
-                return; 
-            h.Name = data.Name; // có thể
-            h.Price = data.Price;
-            h.Description = data.Description;
-        }
-
-        public void deleteData(string name)
-        {
-            var h = products.FirstOrDefault(t => t.Name.Equals(name));
-            if (h == null)
-                return;
-            products.Remove(h);
-        }
-
-        public  List<Product> LoadProducts()
-        {
-
-            listSP();
-            return products;
-        }
-
-        public List<Product> GetByName(string name)
-        {
-            if (!string.IsNullOrEmpty(name))
-            {
-                Results = products
-                    .Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-            }
-            return Results;
-        }
+        public void showByCategory() { }
     }
 }
 

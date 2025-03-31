@@ -1,35 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
 using U3.Pages.Models;
 using U3.Pages.Services;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace U3.Pages
 {
     public class ProductPageModel : PageModel
     {
-        private IHostingEnvironment _environment;
+ 
         [BindProperty]
         public IFormFileCollection UploadedImages { get; set; }
         public string notification { get; set; }
-        public List<Product> products = null;
-        public Product product;
-        public List<Product> products_search = null;
         public ProductService _productService;
-        public ProductPageModel(ProductService productService, IHostingEnvironment environment)
+        [BindProperty]
+        public Product product { get; set; }
+
+        [BindProperty]
+        public int categoryId { get; set; }
+
+        public List<Product> products { get; set; }
+        public List<Category> categories { get; set; }
+        public List<Product> products_search { get; set; }
+        public string Message { get; set; }
+        public bool IsProductDetail { get; set; }
+        public ProductPageModel(ProductService productService)
         {
-            products = productService.GetProducts();
-            products_search = new List<Product>();
             _productService = productService;
-            _environment = environment;
-
-        }
-
-        public ProductService Get_productService()
-        {
-            return _productService;
         }
 
         public void OnGet(int? id)
@@ -45,23 +41,22 @@ namespace U3.Pages
             }
         }
 
-        public IActionResult OnGetLastProduct()
+        public IActionResult OnGetProducts()
         {
-            ViewData["Title"] = $"Sản phẩm cuối";
-            product = _productService.GetProducts().LastOrDefault();
-            if (product != null)
+            var _product = _productService.getProducts();
+            if (_product != null)
             {
                 return Page();
             }
             return NotFound();
         }
 
-        public IActionResult OnGetRemoveAll()
+        /*public IActionResult OnGetRemoveAll()
         {
             products.Clear();
             return RedirectToPage("ProductPage");
         }
-        public IActionResult OnPostAddProduct([FromForm] Product product)
+        public IActionResult OnPostAddProduct([FromForm] Productlast product)
         {
             if (UploadedImages != null)
             {
@@ -99,16 +94,16 @@ namespace U3.Pages
         {
             ViewData["Title"] = "Tìm kiếm";
             products_search.Clear();
-            var h = _productService.GetByName(name);
+            var h = _productService.PostSearch(name);
             products_search.AddRange(h);
             return Page();
         }
 
-        public IActionResult OnPostUpdateProduct([FromForm] Product product)
+        public IActionResult OnPostUpdateProduct([FromForm] Productlast product)
         {
             _productService.updateData(product);
             return RedirectToPage("ProductPage");
-        }
+        }*/
        
     }
 }

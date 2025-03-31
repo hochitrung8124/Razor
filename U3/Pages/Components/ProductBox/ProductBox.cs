@@ -6,23 +6,7 @@ namespace U3.Pages.Components.ProductBox
 {
     public class ProductBox : ViewComponent
     {
-        /*        List<Product> products = new List<Product>()
-                {
-                    new Product() { Name = "Ip14", Description = "Dien thoai", Price = 1000 },
-                    new Product() { Name = "Ip15", Description = "Dien thoai", Price = 1000 },
-                    new Product() { Name = "Ip16", Description = "Dien thoai", Price = 1000 }
-                };*/
-
-        /*        public IViewComponentResult Invoke()
-                {
-
-                    //nếu muốn thay file mac định "default.cshtml" thay thành một file bất kì thì dùng cấu trúc
-                    return View<List<Product>>("_Default", products);
-
-                    //mặc đinh
-                    return View<List<Product>>(products);
-                }*/
-         List<Productlast> products = null;
+         List<Product> products = null;
         public ProductBox(ProductService productService)
         {
             _productService = productService;
