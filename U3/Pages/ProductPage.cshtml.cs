@@ -36,10 +36,6 @@ namespace U3.Pages
                 product = _productService.GetProductById(id.Value);
                 IsProductDetail = true;
             }
-            else
-            {
-                ViewData["Title"] = $"Danh sách sản phẩm";
-            }
         }
 
 

@@ -21,6 +21,7 @@ namespace U3.Pages.Services
         {
             var products = _myDBc.Products.Select(dd => new Product
             {
+                Id = dd.Id,
                 Name = dd.Name,
                 Description = dd.Description,
                 ImagePaths = dd.ImagePaths,

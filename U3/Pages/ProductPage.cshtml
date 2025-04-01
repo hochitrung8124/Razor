@@ -67,6 +67,30 @@ else
             }
         </select>
     </form> *@
+    <hr>
+    <h1>Tìm kiếm sản phẩm</h1>
+    <form class="row" method="post" asp-page-handler="Search">
+        <div class="col-auto">
+            <label class="form-control-plaintext">Tên sản phẩm:</label>
+        </div>
+        <div class="col-auto">
+            <input class="form-control" type="text" name="searchName" required />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        </div>
+    </form>
+    <h1>
+        Danh sách sản phẩm;
+    </h1>
+    @if (products_search != null && products_search.Any())
+    {
+        @await Component.InvokeAsync("ProductBox", new { sapxeptang = true, product_list = products_search })
+    }
+
+    <button id="scrollToTopBtn" class="btn btn-primary scroll-to-top" onclick="scrollToTop()">
+        ⬆ Lên đầu
+    </button>
     @await Component.InvokeAsync("ProductBox", new { sapxeptang = true, Model.categoryId })
     <hr>
     <a class="btn btn-primary" asp-page="ProductPage" asp-page-handler="RemoveAll">Xóa tất cả</a>
@@ -125,4 +149,78 @@ else
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Thêm sản phẩm mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data" asp-page-handler="AddProduct">
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="@Model.product.Name">Tên:</label>
+                            <input class="form-control" asp-for="@Model.product.Name" />
+                            <span class="text-danger" asp-validation-for="@Model.product.Name"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="@Model.product.Description">Mô tả:</label>
+                            <input class="form-control" asp-for="@Model.product.Description" />
+                            <span class="text-danger" asp-validation-for="@Model.product.Description"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="@Model.product.Price">Giá:</label>
+                            <input class="form-control" asp-for="@Model.product.Price" />
+                            <span class="text-danger" asp-validation-for="@Model.product.Price"></span>
+                        </div>
+@*                         <div class="mb-3">
+                            <label class="form-label">Chọn danh mục:</label>
+                            <select class="form-select" asp-for="@Model.product.CategoryId" required>
+                                <option value="" disabled selected>Chọn danh mục</option>
+                                @foreach (var category in Model.categories)
+                                {
+                                    <option value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                        </div> *@
+                        <div class="mb-3">
+                            <label class="form-label">Ảnh sản phẩm:</label>
+                            <input type="file" name="UploadedImages" multiple class="form-control" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 }
+
+<style>
+    .scroll-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: none;
+        z-index: 1000;
+    }
+</style>
+
+<script>
+    window.onscroll = function () {
+        var btn = document.getElementById("scrollToTopBtn");
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    };
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+</script>
