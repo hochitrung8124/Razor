@@ -34,12 +34,14 @@ namespace U3.Pages
             {
                 ViewData["Title"] = $"Thong tin sản phẩm (ID = {id.Value})";
                 product = _productService.GetProductById(id.Value);
+                IsProductDetail = true;
             }
             else
             {
                 ViewData["Title"] = $"Danh sách sản phẩm";
             }
         }
+
 
         public IActionResult OnGetProducts()
         {
@@ -51,12 +53,12 @@ namespace U3.Pages
             return NotFound();
         }
 
-        /*public IActionResult OnGetRemoveAll()
+        public IActionResult OnGetRemoveAll()
         {
             products.Clear();
             return RedirectToPage("ProductPage");
         }
-        public IActionResult OnPostAddProduct([FromForm] Productlast product)
+        public IActionResult OnPostAddProduct([FromForm] Product product)
         {
             if (UploadedImages != null)
             {
@@ -80,31 +82,13 @@ namespace U3.Pages
                 return Page();
             }
 
-            _productService.addData(product);
+            _productService.addProduct(product);
             return RedirectToPage("ProductPage");
         }
 
-        public IActionResult OnGetLoadAll()
-        {
-            _productService.LoadProducts();
-            return RedirectToPage("ProductPage");
-        }
 
-        public IActionResult OnPostByName(string name)
-        {
-            ViewData["Title"] = "Tìm kiếm";
-            products_search.Clear();
-            var h = _productService.PostSearch(name);
-            products_search.AddRange(h);
-            return Page();
-        }
 
-        public IActionResult OnPostUpdateProduct([FromForm] Productlast product)
-        {
-            _productService.updateData(product);
-            return RedirectToPage("ProductPage");
-        }*/
-       
+      
     }
 }
 

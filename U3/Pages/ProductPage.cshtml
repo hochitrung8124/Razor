@@ -9,7 +9,7 @@
 <h1>
     @ViewData["Title"]
 </h1>
-@if (product != null)
+@if (Model.IsProductDetail)
 {
     <h2>@product.Name</h2>
     <p>Mô tả: @product.Description</p>
@@ -26,7 +26,6 @@
         }
     </div>
     <a asp-page="ProductPage" asp-route-id="">Danh sách sản phẩm</a>
-
     <h1>Cập nhật sản phẩm</h1>
     <form method="post" enctype="multipart/form-data" asp-page-handler="UpdateProduct">
         <div class="mb-3">
@@ -58,18 +57,17 @@
 }
 else
 {
-    <form method="get">
+@*     <form method="get">
         <label class="form-label">Chọn danh mục:</label>
-@*         <select class="form-select" asp-for="@Model.categoryId" onchange="this.form.submit()" required>
+        <select class="form-select" asp-for="@Model.categoryId" onchange="this.form.submit()" required>
             <option value="0" selected>Tất cả</option>
             @foreach (var category in Model.categories)
             {
                 <option value="@category.Id">@category.Name</option>
             }
-        </select> *@
-    </form>
+        </select>
+    </form> *@
     @await Component.InvokeAsync("ProductBox", new { sapxeptang = true, Model.categoryId })
-
     <hr>
     <a class="btn btn-primary" asp-page="ProductPage" asp-page-handler="RemoveAll">Xóa tất cả</a>
     <a class="btn btn-primary" asp-page="ProductPage" asp-page-handler="LoadAll">Nạp sản phẩm</a>
@@ -79,7 +77,7 @@ else
         Thêm sản phẩm
     </button>
 
-    <!-- Modal -->
+    <!-- Form thêm sản phẩm -->
     <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -105,8 +103,8 @@ else
                             <span class="text-danger" asp-validation-for="@Model.product.Price"></span>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Chọn danh mục:</label>
-@*                             <select class="form-select" asp-for="@Model.product.CategoryId" required>
+                            @*                            <label class="form-label">Chọn danh mục:</label>
+                             <select class="form-select" asp-for="@Model.product.CategoryId" required>
                                 <option value="" disabled selected>Chọn danh mục</option>
                                 @foreach (var category in Model.categories)
                                 {
