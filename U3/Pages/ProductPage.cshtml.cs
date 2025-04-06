@@ -26,9 +26,12 @@ namespace U3.Pages
         public ProductPageModel(ProductService productService)
         {
             _productService = productService;
+            products = _productService.getProducts();
+            categories = _productService.GetCategories();
+            products_search = new List<Product>();
         }
 
-        public void OnGet(int? id)
+        public void OnGet(int? id, int? categoryId)
         {
             if (id != null)
             {
@@ -36,8 +39,29 @@ namespace U3.Pages
                 product = _productService.GetProductById(id.Value);
                 IsProductDetail = true;
             }
+            else
+            {
+                if (categoryId.HasValue && categoryId.Value > 0)
+                {
+                    this.categoryId = categoryId.Value;
+                }
+                else
+                {
+                    this.categoryId = 0;
+                }
+            }
         }
 
+        public IActionResult OnPostUpdateProduct([FromForm] Product product)
+        {
+            _productService.updateProduct(product);
+            return RedirectToPage("ProductPage");
+        }
+        public IActionResult OnPostDeleteProduct([FromForm] Product product)
+        {
+            _productService.updateProduct(product);
+            return RedirectToPage("ProductPage");
+        }
 
         public IActionResult OnGetProducts()
         {
@@ -53,6 +77,15 @@ namespace U3.Pages
         {
             products.Clear();
             return RedirectToPage("ProductPage");
+        }
+        public void OnPostSearch(string searchName)
+        {
+            products_search = _productService.searchByName(searchName);
+        }
+
+        public void OnPostFilterByCategory(int categoryId)
+        {
+            products_search = _productService.GetProductsByCategory(categoryId);
         }
         public IActionResult OnPostAddProduct([FromForm] Product product)
         {

@@ -1,4 +1,5 @@
-﻿using U3.Pages.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using U3.Pages.Models;
 //using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace U3.Pages.Services
@@ -26,6 +27,7 @@ namespace U3.Pages.Services
                 Description = dd.Description,
                 ImagePaths = dd.ImagePaths,
                 Price = dd.Price,
+                CategoryId = dd.CategoryId,
             });
             return products.ToList(); 
         }
@@ -81,7 +83,14 @@ namespace U3.Pages.Services
             return _listProduct.ToList();    
         }
 
-        public void showByCategory() { }
+        public List<Product> GetProductsByCategory(int categoryId)
+        {
+            return _myDBc.Products.Where(p => p.CategoryId == categoryId).ToList();
+        }
+        public List<Category> GetCategories()
+        {
+            return _myDBc.Categories.ToList();
+        }
     }
 }
 
