@@ -91,6 +91,23 @@ namespace U3.Pages.Services
         {
             return _myDBc.Categories.ToList();
         }
+
+        public void RemoveAll()
+        {
+            _myDBc.Products.RemoveRange(_myDBc.Products);
+            _myDBc.SaveChanges();
+
+            // Reset ID của bảng Product về 0
+            using (var connection = _myDBc.Database.GetDbConnection())
+            {
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "DBCC CHECKIDENT ('Product', RESEED, 0)";
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
 

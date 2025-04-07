@@ -59,8 +59,8 @@ namespace U3.Pages
         }
         public IActionResult OnPostDeleteProduct([FromForm] Product product)
         {
-            _productService.updateProduct(product);
-            return RedirectToPage("ProductPage");
+            _productService.deleteProduct(product.Id);
+            return RedirectToPage("ProductPage", new { id = (int?)null });
         }
 
         public IActionResult OnGetProducts()
@@ -75,9 +75,10 @@ namespace U3.Pages
 
         public IActionResult OnGetRemoveAll()
         {
-            products.Clear();
+            _productService.RemoveAll();
             return RedirectToPage("ProductPage");
         }
+
         public void OnPostSearch(string searchName)
         {
             products_search = _productService.searchByName(searchName);
